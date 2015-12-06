@@ -52,7 +52,7 @@ include '../function/dbconn.php';
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../">Znim shop</a>
+                <a class="navbar-brand" href="../">Zanim shop</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -101,7 +101,7 @@ include '../function/dbconn.php';
                                          if(empty($_SESSION['email'])){
                                           echo '<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Login</button>';
                                         }else{
-                                         echo'<form action="./function/login.php">
+                                         echo'<form action="./login.php">
                                                 <input class="btn btn-info btn-xs" type="submit" value="logout">
                                               </form>';}
                                     }
@@ -143,8 +143,9 @@ include '../function/dbconn.php';
 
                 <div class="row">
 
-                   <button type="button" class="btn btn-info btn-lg btn-block" data-toggle="modal" data-target="#myModal">show</button>
-                    <button type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#add">add</button>
+                   <button type="button" class="btn btn-info btn-lg btn-block" data-toggle="modal" data-target="#myModal">Show Product</button>
+                    <button type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#add">Add Product</button>
+                    <button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#permision">edit permision</button>
                    
                     
 
@@ -285,7 +286,7 @@ include '../function/dbconn.php';
                                              </div>
                                              </div>
                                                             <div class="form-group">
-                                                            <label class="control-label col-sm-2" for="pwd">money:</label>
+                                                            <label class="control-label col-sm-2" for="pwd">category:</label>
                                                             <div class="col-sm-10">          
                                                             <select name="category" >
                                                                 <option value="drug">drug</option>
@@ -399,7 +400,7 @@ include '../function/dbconn.php';
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add  data</h4>
+          <h4 class="modal-title">edit  data</h4>
         </div>
         <div class="modal-body">
                                             <?php
@@ -453,7 +454,7 @@ include '../function/dbconn.php';
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <span class="col-sm-6 pull-left">
-        <button type="submit" class="btn btn-default btn-primary">Add</button>
+        <button type="submit" class="btn btn-default btn-primary">update</button>
       
       </span >
         </div>
@@ -464,6 +465,64 @@ include '../function/dbconn.php';
   
 </div>
 
+
+
+
+
+
+
+ <!-- EDIT USER FROM -->
+<div class="container">
+<?php 
+ $rs =  mysql_query("SELECT * FROM tb_login");
+ 
+
+
+ ?>
+  <!-- Modal -->
+  <div class="modal fade" id="permision" role="dialog">
+    <div class="modal-dialog ">
+     <form class="form-horizontal" role="form" action="permision_update.php" method="post">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Permision</h4>
+        </div>
+        <div class="modal-body">
+        <table class="table table-hover">
+                    <thead>
+                           <tr>
+                                <th>#</th><th>name</th><th>email</th><th>permision</th>
+                              </tr>
+              <?php 
+                while ($row = mysql_fetch_assoc($rs)) {
+                    echo '<tr>';
+                         echo '<td>'.$row['id'].'</td>';
+                         echo '<td>'.$row['name'].'</td>';
+                         echo '<td>'.$row['email'].'</td>';
+                         echo '<td><input type="number" name="'.$row['id'].'" value="'.$row['permision'].'" placeholder="" min="0" max="2" required autofocus></td>';
+                    echo '</tr>';
+                }
+               ?>
+               </table>
+        </div>
+        <div class="modal-footer ">
+        <span class="col-sm-6 pull-right">
+
+        <button type="button" class="btn btn-default btn-danger"  data-dismiss="modal">close</button>
+         <input type="hidden" name="oldemail" value="<?=$row['email'];?>">
+        </span >
+        <span class="col-sm-6 pull-left">
+        <button type="submit" class="btn btn-default btn-primary">upadate</button>
+            
+      </span ></div>
+      </div>
+      </form>
+    </div>
+  </div>
+  
+</div>
 <?php if(isset($_GET['data'])){ ?>
     <script type="text/javascript">
     $(window).load(function(){

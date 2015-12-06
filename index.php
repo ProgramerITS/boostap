@@ -45,7 +45,7 @@ $_SESSION['email'] = isset($_SESSION['email'])?$_SESSION['email']:'';
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Znim shop</a>
+                <a class="navbar-brand" href="#">Zanim shop</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -185,11 +185,13 @@ $_SESSION['email'] = isset($_SESSION['email'])?$_SESSION['email']:'';
                      ?>
                     <div class="col-sm-4 col-lg-4 col-md-4">
                         <div class="thumbnail">
-                            <img src="./img/yar/<?=$row['img_yar'].'.jpg';?>" alt="Cinque Terre" >
+                         <a href="./user/add_vile.php?name=<?=$row['name_yar'];?>">
+                            <img src="./img/yar/<?=$row['img_yar'].'.jpg';?>" alt="Cinque Terre" style="width:320px;height:150px;" >
+                            </a>
                             
                             <div class="caption">
                                 <h4 class="pull-right"><?=$row['money_yar'].'฿';?></h4>
-                                <h4><a href="#"><?=$row['name_yar'];?></a>
+                                <h4><a href="./user/add_vile.php?name=<?=$row['name_yar'];?>"><?=$row['name_yar'];?></a>
                                 </h4>
                                 <p><?=$row['description_yar'];?></p>
                             </div>
@@ -432,7 +434,6 @@ $_SESSION['email'] = isset($_SESSION['email'])?$_SESSION['email']:'';
   </div>
   
 </div>
-
 
 
 

@@ -43,7 +43,7 @@ include './function/dbconn.php';
                     <span class="icon-bar"></span>
                 </button>
 
-                <a class="navbar-brand" href="./">Znim shop</a>
+                <a class="navbar-brand" href="./">Zanim shop</a>
            
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -171,11 +171,12 @@ include './function/dbconn.php';
                      ?>
                     <div class="col-sm-4 col-lg-4 col-md-4">
                         <div class="thumbnail">
-                            <img src="./img/yar/<?=$row['img_yar'].'.jpg';?>" alt="Cinque Terre" >
-                            
+                          <a href="./user/add_vile.php?name=<?=$row['name_yar'];?>">
+                            <img src="./img/yar/<?=$row['img_yar'].'.jpg';?>" alt="Cinque Terre" style="width:320px;height:150px;" >
+                            </a>
                             <div class="caption">
                                 <h4 class="pull-right"><?=$row['money_yar'].'฿';?></h4>
-                                <h4><a href="#"><?=$row['name_yar'];?></a>
+                                <h4><a href="./user/add_vile.php?name=<?=$row['name_yar'];?>"><?=$row['name_yar'];?></a>
                                 </h4>
                                 <p><?=$row['description_yar'];?></p>
                             </div>
@@ -423,6 +424,52 @@ include './function/dbconn.php';
   </div>
   
 </div>
+
+
+
+
+
+
+
+ <!-- Show IMG FROM -->
+<div class="container">
+
+  <!-- Modal -->
+  <div class="modal fade" id="img" role="dialog">
+    <div class="modal-dialog ">
+     
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><?php echo isset($_GET['img'])?$_GET['img']:'show';?></h4>
+        </div>
+        <div class="modal-body">
+                <img src="./img/yar/<?=$_GET['img'].'.jpg';?>" alt="Cinque Terre" style="width:500px;height:300px;" >
+        </div>
+        <div class="modal-footer ">
+        <span class="col-sm-6 pull-right">
+
+        <button type="button" class="btn btn-default btn-danger"  data-dismiss="modal">close</button>
+         <input type="hidden" name="oldemail" value="<?=$row['email'];?>">
+        </span >
+        <span class="col-sm-6 pull-left">
+        
+            
+      </span ></div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+<?php if(isset($_GET['img'])){ ?>
+  <script type="text/javascript">
+    $(window).load(function(){
+        $('#img').modal('show');
+    });
+</script>
+<?php } ?>
 </body>
 
 </html>

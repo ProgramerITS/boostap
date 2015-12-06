@@ -1,4 +1,10 @@
 <?php 
+
+
+session_start();
+if($_SESSION['permision']!=2){
+	header("Location: ../");
+}
 include '../function/dbconn.php';
     $filename = $_FILES['fileField']['name'];
 	$pat = getcwd().DIRECTORY_SEPARATOR;
