@@ -9,6 +9,7 @@ if(empty($_SESSION['email'])){
  $pass  = $_POST['pass'];
  $oldemail = $_POST['oldemail'];
  $sql = "UPDATE tb_login SET  name='$name',email='$email',password='$pass' WHERE email='$oldemail'";
+ $_SESSION['name']=$name;
 $ck = mysql_query($sql);
 if(!$ck){
 		echo "error". $sql ;

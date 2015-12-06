@@ -1,7 +1,7 @@
 <?php 
-	include '../function/dbconn.php';
+include '../function/dbconn.php';
     $filename = $_FILES['fileField']['name'];
-	$path = getcwd().DIRECTORY_SEPARATOR;
+	$pat = getcwd().DIRECTORY_SEPARATOR;
 	$jp = explode('.', $filename);
 	$path = $pat.'yar/';
 	$filename = $_POST['name'].'.jpg';
@@ -15,17 +15,42 @@
 		   $filename =$_POST['name'];
 
        	}else{
-      		echo"<script language=\"JavaScript\">";
-			echo 'alert("File extensions .'.$jp[count($jp)-1].' Please only upload .jpg")';
-			echo"</script>";
-			
+      				
 			$filename ='NU';
 			}
-			$sql =  "INSERT INTO tb_yar (name_yar,description_yar,money_yar,img_yar) VALUES ('".$_POST['name']."','".$_POST['description']."','".$_POST['money']."','$filename')";
+
+
+
+
+
+	if(!isset($_POST['oldname'])){
+	
+			$sql =  "INSERT INTO tb_yar (name_yar,description_yar,money_yar,img_yar,category) VALUES ('".$_POST['name']."','".$_POST['description']."','".$_POST['money']."','$filename','".$_POST['category']."')";
 			$ck = mysql_query($sql);
+			if($ck){
+				
+				header("Location: ../function/admin.php");
+				exit;
+			}
+	}else{	
+
+
+			$sql =  "UPDATE tb_yar SET name_yar = '".$_POST['name']."' ,description_yar='".$_POST['description']."',money_yar='".$_POST['money']."',category='".$_POST['category']."' WHERE name_yar = '".$_POST['oldname']."'";
+			$ck = mysql_query($sql);
+			echo "$sql";
 			if($ck){
 				header("Location: ../function/admin.php");
 			}
-			
+
+
+
+
+
+
+
+	}
+	
+	header("Location: ../function/admin.php");
+	exit;		
 
  ?>

@@ -1,8 +1,15 @@
 <?php 
 session_start();
 
-
-
+if(isset($_GET['cls'])){
+		unset($_SESSION['order']);
+		unset($_SESSION['monny']);
+		unset($_SESSION['name_shop']);
+		unset($_SESSION['cout_shop']);
+		header("Location: ../show.php");
+		exit;
+}
+if(isset($_POST)){
 $_SESSION['order'] = isset($_SESSION['order'])?$_SESSION['order']:'';
 $order = explode('|',$_SESSION['order']);
 
@@ -28,5 +35,6 @@ $_SESSION['order']    = implode('|', $order);
 $cout_shop = $_SESSION['cout_shop'];
 $cout_shop=$cout_shop-1;
 $_SESSION['cout_shop']=$cout_shop;
+}
 header("Location: ../show.php");
 ?>

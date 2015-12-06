@@ -4,8 +4,11 @@ if($_SESSION['permision']!=2){
 	header("Location: ../");
 }
 $cout_shop = isset($_SESSION['cout_shop'])?$_SESSION['cout_shop']:'0';
+$_SESSION['email'] = isset($_SESSION['email'])?$_SESSION['email']:'';
 $name = isset($_SESSION['name'])?$_SESSION['name']:'';
 $_SESSION['permision']=isset($_SESSION['permision'])?$_SESSION['permision']:'0';
+$ip = $_SERVER['REMOTE_ADDR'];
+$details = json_decode(file_get_contents("http://ipinfo.io/{$ip}"));
 include '../function/dbconn.php';
 ?>
 
@@ -31,7 +34,7 @@ include '../function/dbconn.php';
 		  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+        
 </head>
 
 </head>
@@ -72,7 +75,21 @@ include '../function/dbconn.php';
                 </ul>   
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="../user/update_user.php"><?=$name;?></a>
+                         <?php  
+                            echo '<a ';
+                            if(isset($_SESSION['name'])){
+                                  echo 'data-toggle="modal" data-target="#edit"';
+                            }
+                            echo '>'.$name;
+                            if(isset($details->country)){
+                                if(!empty($name)){
+                                    echo " : ";
+                                }
+                                echo $details->country;
+                            }
+
+                            echo '</a>';
+                        ?>
                     </li>
                     <li>
                     <a class="item" href="#">
@@ -81,9 +98,12 @@ include '../function/dbconn.php';
                                         echo '<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Login</button>';
                                                                
                                     }else{
-                                         echo'<form action="#">
+                                         if(empty($_SESSION['email'])){
+                                          echo '<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Login</button>';
+                                        }else{
+                                         echo'<form action="./function/login.php">
                                                 <input class="btn btn-info btn-xs" type="submit" value="logout">
-                                              </form>';
+                                              </form>';}
                                     }
                             ?>
                         
@@ -163,7 +183,7 @@ include '../function/dbconn.php';
 
 <!-- Modal show-->
   <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog  modal-lg">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -193,10 +213,12 @@ include '../function/dbconn.php';
 					      <tr>
 					        <th>#</th>
 					        <th>name</th>
+                            <th>category</th>
 					        <th>description</th>
 					        <th>Money</th>
 					        <th>reviews</th>
 					        <th>EDIT</th>
+                            <th>DELETE</th>
 					      </tr>
 					    </thead>
 
@@ -215,10 +237,12 @@ include '../function/dbconn.php';
 					      <tr>
 					        <td><?=$row['id_yar'];?></td>
 					        <td><?=$row['name_yar'];?></td>
+                            <td><?=$row['category'];?></td>
 					        <td><?=$row['description_yar'];?></td>
 					        <td><?=$row['money_yar'];?></td>
 					        <td><?=$row['reviews_yar'];?></td>
-					        <td><a>EDIT</a></td>
+					        <td><a href="?data=<?=$row['name_yar'];?>" >EDIT</a></td>
+                            <td><a class="glyphicon glyphicon-remove" href="del_data.php?del=<?=$row['name_yar'];?>"></a></td>
 					      </tr>
 					      <?php } ?>
 					    </tbody>
@@ -235,7 +259,7 @@ include '../function/dbconn.php';
 
 
 
-<!-- Login FROM -->
+<!-- ADD FROM -->
 <div class="container">
   <!-- Modal -->
   <div class="modal fade" id="add" role="dialog">
@@ -264,8 +288,8 @@ include '../function/dbconn.php';
                                                             <label class="control-label col-sm-2" for="pwd">money:</label>
                                                             <div class="col-sm-10">          
                                                             <select name="category" >
-                                                                <option value="drug"></option>
-                                                                <option value="water"></option>
+                                                                <option value="drug">drug</option>
+                                                                <option value="water">wate</option>
                                                             </select>
                                                             </div>
                                                             </div>
@@ -304,8 +328,149 @@ include '../function/dbconn.php';
 
 
 
+ <!-- EDIT USER FROM -->
+<div class="container">
+<?php 
+ $rs =  mysql_query("SELECT * FROM tb_login WHERE email='".$_SESSION['email']."'");
+ $row = mysql_fetch_assoc($rs);
 
 
+ ?>
+  <!-- Modal -->
+  <div class="modal fade" id="edit" role="dialog">
+    <div class="modal-dialog ">
+     <form class="form-horizontal" role="form" action="./user/up_user.php" method="post">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">EDIT USER</h4>
+        </div>
+        <div class="modal-body">
+              <div class="form-group">
+              <label class="control-label col-sm-2" for="name">Name:</label>
+              <div class="col-sm-10">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Enter name" value="<?=$row['name'];?>" required autofocus>
+              </div>
+              </div>
+                       <div class="form-group">
+                       <label class="control-label col-sm-2" for="email">Email:</label>
+                       <div class="col-sm-10">
+                       <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" value="<?=$row['email'];?>" required autofocus>
+                       </div>
+                       </div>
+                                <div class="form-group">
+                                <label class="control-label col-sm-2" for="pwd">Password:</label>
+                                <div class="col-sm-10">          
+                                <input type="password" name="pass" class="form-control" id="pwd" placeholder="Enter password" required autofocus>
+                                </div>
+                                </div>
+        </div>
+        <div class="modal-footer ">
+        <span class="col-sm-6 pull-right">
+
+        <button type="button" class="btn btn-default btn-danger"  data-dismiss="modal">close</button>
+         <input type="hidden" name="oldemail" value="<?=$row['email'];?>">
+        </span >
+        <span class="col-sm-6 pull-left">
+        <button type="submit" class="btn btn-default btn-primary">upadate</button>
+            
+      </span ></div>
+      </div>
+      </form>
+    </div>
+  </div>
+  
+</div>
+
+
+
+
+
+
+
+<!-- EDIT FROM -->
+<div class="container">
+  <!-- Modal -->
+  <div class="modal fade" id="editData" role="dialog">
+    <div class="modal-dialog">
+     <form class="form-horizontal" role="form" action="../img/upload_data.php" method="post" enctype="multipart/form-data">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add  data</h4>
+        </div>
+        <div class="modal-body">
+                                            <?php
+                                                $dataSql = isset($_GET['data'])?$_GET['data']:'';
+                                                $rs = mysql_query("SELECT * FROM tb_yar WHERE name_yar = '$dataSql'");
+                                                $row = mysql_fetch_assoc($rs);
+
+                                             ?>
+                             <div class="form-group">
+                             <label class="col-sm-2" for="name">name:</label>
+                             <div class="col-sm-10">
+                             <input type="text" name="name" class="form-control" id="name" placeholder="Enter name" value="<?=$row['name_yar'];?>" required autofocus>
+                             </div>
+                             </div>
+                                             
+                                              <div class="form-group">
+                                             <label class="col-sm-2" for="name">description:</label>
+                                             <div class="col-sm-10">
+                                                    <textarea class="form-control"  name="description"><?=$row['description_yar'];?></textarea>
+                                             </div>
+                                             </div>
+                                                            <div class="form-group">
+                                                            <label class="control-label col-sm-2" for="pwd">money:</label>
+                                                            <div class="col-sm-10">          
+                                                            <select name="category" >
+                                                                <option value="drug" <?php if($row['category']=='drug'){echo 'selected';}?>>drug</option>
+                                                                <option value="water"<?php if($row['category']=='water'){echo 'selected';}?>>wate</option>
+                                                            </select>
+                                                            </div>
+                                                            </div>
+
+
+
+                                                                                            <div class="form-group">
+                                                                                            <label class="control-label col-sm-2" for="pwd" >money:</label>
+                                                                                            <div class="col-sm-10">          
+                                                                                            <input type="number" name="money" class="form-control" id="money" placeholder="Enter money" min="0" value="<?=$row['money_yar'];?>" required autofocus>
+                                                                                            </div>
+                                                                                            </div>
+                                                                                                             <div class="form-group">
+                                                                                                             <label class="control-label col-sm-2" for="pwd">image:</label>
+                                                                                                             <div class="col-sm-10">    
+                                                                                                                <span class="btn btn-default btn-file">      
+                                                                                                                      <input   type="file" name="fileField" value="myValue" accept=".jpg" id="fileField">
+                                                                                                                </span>
+                                                                                                             </div>
+                                                                                                             </div>
+                                                                                                             <input type="hidden" name="oldname" value="<?=$row['name_yar'];?>">
+                                                  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <span class="col-sm-6 pull-left">
+        <button type="submit" class="btn btn-default btn-primary">Add</button>
+      
+      </span >
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  
+</div>
+
+<?php if(isset($_GET['data'])){ ?>
+    <script type="text/javascript">
+    $(window).load(function(){
+        $('#editData').modal('show');
+    });
+</script>
+<?php } ?>
 
 <?php if(isset($_GET['search'])){ ?>
 	<script type="text/javascript">
