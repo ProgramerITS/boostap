@@ -1,15 +1,13 @@
 <?php 
 session_start();
-if($_SESSION['permision']!=2){
-	header("Location: ../");
-}
+
 $cout_shop = isset($_SESSION['cout_shop'])?$_SESSION['cout_shop']:'0';
 $_SESSION['email'] = isset($_SESSION['email'])?$_SESSION['email']:'';
 $name = isset($_SESSION['name'])?$_SESSION['name']:'';
 $_SESSION['permision']=isset($_SESSION['permision'])?$_SESSION['permision']:'0';
 $ip = $_SERVER['REMOTE_ADDR'];
 $details = json_decode(file_get_contents("http://ipinfo.io/{$ip}"));
-include '../function/dbconn.php';
+include './function/dbconn.php';
 ?>
 
 <!DOCTYPE html>
@@ -26,14 +24,14 @@ include '../function/dbconn.php';
     <title>Zinim Shop</title>
 
    
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="../css/shop-homepage.css" rel="stylesheet">
+    <link href="./css/shop-homepage.css" rel="stylesheet">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-		  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
 </head>
 
@@ -52,23 +50,23 @@ include '../function/dbconn.php';
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../">Zanim shop</a>
+                <a class="navbar-brand" href="./">Zanim shop</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li>
-                        <a href="../about.php">About</a>
+                        <a href="./about.php">About</a>
                     </li>
                     
                     <li>
-                        <a href="../show.php">Contact</a>
+                        <a href="./show.php">Contact</a>
                     </li>
                     <?php  
 
                     if($_SESSION['permision']==2){?>
                     <li>
-                        <a href="#">Admin</a>
+                        <a href="./function/admin.php">Admin</a>
                     </li>
                     <?php } ?>
                     
@@ -101,7 +99,7 @@ include '../function/dbconn.php';
                                          if(empty($_SESSION['email'])){
                                           echo '<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Login</button>';
                                         }else{
-                                         echo'<form action="./login.php">
+                                         echo'<form action="./function/login.php">
                                                 <input class="btn btn-info btn-xs" type="submit" value="logout">
                                               </form>';}
                                     }
@@ -141,12 +139,20 @@ include '../function/dbconn.php';
 
             
 
-                <div class="row">
+                <div class="row alert alert-info">
+                    <br>
+      
+                   <div class="alert alert-warning" >
+                         <font size="6">รายชือสมาชิก</font> 
 
-                   <button type="button" class="btn btn-info btn-lg btn-block" data-toggle="modal" data-target="#myModal">Show Product</button>
-                    <button type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#add">Add Product</button>
-                    <button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#permision">edit permision</button>
-                   
+                   </div>
+                   <div class="alert alert-warning">
+                   <font size="5">
+                           <p><a href="https://www.facebook.com/nack.sinclairvincent"> Mr.Theerawat butsongka  No.6</a></p>
+                           <p><a href="https://www.facebook.com/Kig.ITS"> Mr.Phisut  kosayamat    No.9</a></p>
+                           <p><a href="https://www.facebook.com/profile.php?id=100004522155585&pnref=story"> Mr.Angkarn Karisin      No.24</a> </p>
+                           </font>
+                   </div>
                     
 
                 </div>
@@ -181,82 +187,55 @@ include '../function/dbconn.php';
     <script src="js/bootstrap.min.js"></script>
 
 
-
-<!-- Modal show-->
+  <!-- Login FROM -->
+<div class="container">
+  <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog  modal-lg">
-    
+    <div class="modal-dialog ">
+     <form class="form-horizontal" role="form" action="./function/login.php" method="post">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <form class="navbar-form navbar-left" role="search" action="" method="get">
-                                <div class="form-group">
-                               
-                                       
-                                          
-                                                            <div class="input-group col-md-12">
-                                                                <input type="text" class="  search-query form-control" placeholder="Search" name="search"/>
-                                                                <span class="input-group-btn">
-                                                                    <button class="btn btn-info" type="submit">
-                                                                        <span class=" glyphicon glyphicon-search"></span>
-                                                                    </button>
-                                                                </span>
-                                                            </div>
-                                  </div>
-                                   
-                        </form>
+          <h4 class="modal-title">login</h4>
         </div>
         <div class="modal-body">
-					        <div class="table-responsive">          
-					  <table class="table">
-					    <thead>
-					      <tr>
-					        <th>#</th>
-					        <th>name</th>
-                            <th>category</th>
-					        <th>description</th>
-					        <th>Money</th>
-					        <th>reviews</th>
-					        <th>EDIT</th>
-                            <th>DELETE</th>
-					      </tr>
-					    </thead>
-
-					    <tbody>
-					    <?php
-					    	$query = "SELECT * FROM tb_yar";
-					    	if(isset($_GET['search'])){
-                        		$search = $_GET['search'];
-                        			$query .= " WHERE name_yar LIKE '%$search%'";
-                    			}
-					    	//echo "$query";
-					    	$result = mysql_query($query);	
-					    	while ($row = mysql_fetch_assoc($result)) {
-					    	
-					     ?>
-					      <tr>
-					        <td><?=$row['id_yar'];?></td>
-					        <td><?=$row['name_yar'];?></td>
-                            <td><?=$row['category'];?></td>
-					        <td><?=$row['description_yar'];?></td>
-					        <td><?=$row['money_yar'];?></td>
-					        <td><?=$row['reviews_yar'];?></td>
-					        <td><a href="?data=<?=$row['name_yar'];?>" >EDIT</a></td>
-                            <td><a class="glyphicon glyphicon-remove" href="del_data.php?del=<?=$row['name_yar'];?>"></a></td>
-					      </tr>
-					      <?php } ?>
-					    </tbody>
-					  </table>
-					  </div>
+                             <div class="form-group">
+                             <label class="col-sm-2" for="email">Email:</label>
+                             <div class="col-sm-10">
+                             <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required autofocus>
+                             </div>
+                             </div>
+                             
+                                        <div class="form-group">
+                                        <label class="control-label col-sm-2" for="pwd">Password:</label>
+                                        <div class="col-sm-10">          
+                                        <input type="password" name="pass" class="form-control" id="pwd" placeholder="Enter password" required autofocus>
+                                        </div>
+                                        </div>
+                                                    <div class="form-group">        
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                    <div class="checkbox">
+                                                    <label><input type="checkbox"> Remember me</label>
+                                                    </div>
+                                                    <p><a href="./user/reg.php">register?</a></p>
+                                                    </div>
+                                                    </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <span class="col-sm-6 pull-left">
+        <button type="submit" class="btn btn-default btn-primary">Login</button>
+      
+      </span >
         </div>
       </div>
-      
+      </form>
     </div>
   </div>
+  
+</div>
+
 
 
 
@@ -265,7 +244,7 @@ include '../function/dbconn.php';
   <!-- Modal -->
   <div class="modal fade" id="add" role="dialog">
     <div class="modal-dialog">
-     <form class="form-horizontal" role="form" action="../img/upload_data.php" method="post" enctype="multipart/form-data">
+     <form class="form-horizontal" role="form" action="./img/upload_data.php" method="post" enctype="multipart/form-data">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -395,7 +374,7 @@ include '../function/dbconn.php';
   <!-- Modal -->
   <div class="modal fade" id="editData" role="dialog">
     <div class="modal-dialog">
-     <form class="form-horizontal" role="form" action="../img/upload_data.php" method="post" enctype="multipart/form-data">
+     <form class="form-horizontal" role="form" action="./img/upload_data.php" method="post" enctype="multipart/form-data">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -532,7 +511,7 @@ include '../function/dbconn.php';
 <?php } ?>
 
 <?php if(isset($_GET['search'])){ ?>
-	<script type="text/javascript">
+  <script type="text/javascript">
     $(window).load(function(){
         $('#myModal').modal('show');
     });

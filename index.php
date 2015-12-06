@@ -51,7 +51,7 @@ $_SESSION['email'] = isset($_SESSION['email'])?$_SESSION['email']:'';
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li>
-                        <a href="#">About</a>
+                        <a href="./about.php">About</a>
                     </li>
                     
                     <li>
@@ -242,7 +242,7 @@ $_SESSION['email'] = isset($_SESSION['email'])?$_SESSION['email']:'';
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; Zamin shop 2015</p>
                 </div>
             </div>
         </footer>
